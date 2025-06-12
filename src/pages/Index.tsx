@@ -1,23 +1,27 @@
 
 import { useState } from 'react';
-import Header from '../components/Header';
-import Hero from '../components/Hero';
+import AmazonHeader from '../components/AmazonHeader';
+import AmazonFooter from '../components/AmazonFooter';
+import HeroBanner from '../components/HeroBanner';
 import ProductGrid from '../components/ProductGrid';
-import Categories from '../components/Categories';
-import CartSidebar from '../components/CartSidebar';
+import DealCarousel from '../components/DealCarousel';
+import CategoryGrid from '../components/CategoryGrid';
 import { CartProvider } from '../contexts/CartContext';
 
 const Index = () => {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-
   return (
     <CartProvider>
-      <div className="min-h-screen bg-amazon-light-gray">
-        <Header onCartClick={() => setIsCartOpen(true)} />
-        <Hero />
-        <Categories />
-        <ProductGrid />
-        <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <div className="min-h-screen bg-white">
+        <AmazonHeader />
+        <main>
+          <HeroBanner />
+          <div className="max-w-7xl mx-auto px-4 py-6">
+            <DealCarousel />
+            <CategoryGrid />
+            <ProductGrid />
+          </div>
+        </main>
+        <AmazonFooter />
       </div>
     </CartProvider>
   );

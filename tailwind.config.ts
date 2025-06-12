@@ -53,20 +53,25 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Amazon Clone Custom Colors
 				amazon: {
-					orange: 'hsl(var(--amazon-orange))',
-					yellow: 'hsl(var(--amazon-yellow))',
-					'dark-blue': 'hsl(var(--amazon-dark-blue))',
-					purple: 'hsl(var(--amazon-purple))',
-					'light-gray': 'hsl(var(--amazon-light-gray))',
-					'text-dark': 'hsl(var(--amazon-text-dark))'
+					orange: '#FF9900',
+					'dark-blue': '#232F3E',
+					'light-blue': '#F0F8FF',
+					yellow: '#FFD814',
+					gray: '#828282',
+					'light-gray': '#F3F3F3',
+					'dark-gray': '#222222',
+					text: '#222222',
+					link: '#C7511F'
 				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			fontFamily: {
+				amazon: ['Amazon Ember', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
 			},
 			keyframes: {
 				'accordion-down': {
