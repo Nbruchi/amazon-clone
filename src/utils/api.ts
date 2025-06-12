@@ -71,7 +71,7 @@ class ApiClient {
   }
 
   // Order endpoints
-  async createOrder(orderData: any) {
+  async createOrder(orderData: unknown) {
     return this.request('/orders', {
       method: 'POST',
       body: JSON.stringify(orderData),
