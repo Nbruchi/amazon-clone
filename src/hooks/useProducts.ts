@@ -1,82 +1,153 @@
 
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
-// Mock data service (placeholder for PostgreSQL integration)
 interface Product {
   id: number;
   title: string;
   price: number;
-  originalPrice: number;
-  rating: number;
-  reviews: number;
-  image: string;
+  description: string;
   category: string;
-  prime: boolean;
+  image: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
 }
 
-// This hook will eventually connect to PostgreSQL database
-export const useProducts = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface ProductsResponse {
+  products: Product[];
+  total: number;
+  skip: number;
+  limit: number;
+}
 
-  useEffect(() => {
-    // Simulate API call to PostgreSQL database
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        
-        // TODO: Replace with actual PostgreSQL query
-        // const response = await fetch('/api/products');
-        // const data = await response.json();
-        
-        // Mock data for now
-        const mockProducts: Product[] = [
-          {
-            id: 1,
-            title: 'Wireless Bluetooth Headphones',
-            price: 79.99,
-            originalPrice: 129.99,
-            rating: 4.5,
-            reviews: 1243,
-            image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400',
-            category: 'Electronics',
-            prime: true,
-          },
-          // Add more mock products here...
-        ];
-        
-        setProducts(mockProducts);
-      } catch (err) {
-        setError('Failed to fetch products');
-        console.error('Error fetching products:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+// Mock API calls - replace with real API endpoints
+const fetchProducts = async (category?: string, search?: string): Promise<Product[]> => {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  const mockProducts: Product[] = [
+    {
+      id: 1,
+      title: "iPhone 15 Pro Max",
+      price: 1199.99,
+      description: "Latest iPhone with advanced camera system",
+      category: "electronics",
+      image: "/placeholder.svg",
+      rating: { rate: 4.5, count: 1234 }
+    },
+    {
+      id: 2,
+      title: "MacBook Air M2",
+      price: 999.99,
+      description: "Powerful laptop with M2 chip",
+      category: "computers",
+      image: "/placeholder.svg",
+      rating: { rate: 4.7, count: 856 }
+    },
+    {
+      id: 3,
+      title: "AirPods Pro (2nd generation)",
+      price: 249.99,
+      description: "Wireless earbuds with active noise cancellation",
+      category: "electronics",
+      image: "/placeholder.svg",
+      rating: { rate: 4.6, count: 2341 }
+    },
+    // Add more mock products...
+  ];
 
-    fetchProducts();
-  }, []);
-
-  return { products, loading, error };
+  let filteredProducts = mockProducts;
+  
+  if (category) {
+    filteredProducts = mockProducts.filter(p => p.category === category);
+  }
+  
+  if (search) {
+    filteredProducts = mockProducts.filter(p => 
+      p.title.toLowerCase().includes(search.toLowerCase()) ||
+      p.description.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+  
+  return filteredProducts;
 };
 
-// Hook for fetching products by category
-export const useProductsByCategory = (category: string) => {
-  const { products, loading, error } = useProducts();
-  const filteredProducts = products.filter(product => 
-    category === 'All' || product.category === category
-  );
+const fetchProduct = async (id: string): Promise<Product> => {
+  await new Promise(resolve => setTimeout(resolve, 300));
   
-  return { products: filteredProducts, loading, error };
+  const mockProduct: Product = {
+    id: parseInt(id),
+    title: "iPhone 15 Pro Max",
+    price: 1199.99,
+    description: "The iPhone 15 Pro Max features a titanium design, A17 Pro chip, and advanced camera system with 5x telephoto zoom.",
+    category: "electronics",
+    image: "/placeholder.svg",
+    rating: { rate: 4.5, count: 1234 }
+  };
+  
+  return mockProduct;
 };
 
-// Hook for searching products
-export const useSearchProducts = (query: string) => {
-  const { products, loading, error } = useProducts();
-  const searchResults = products.filter(product =>
-    product.title.toLowerCase().includes(query.toLowerCase())
-  );
-  
-  return { products: searchResults, loading, error };
+export const useProducts = (category?: string, search?: string) => {
+  return useQuery({
+    queryKey: ['products', category, search],
+    queryFn: () => fetchProducts(category, search),
+  });
+};
+
+export const useProduct = (id: string) => {
+  return useQuery({
+    queryKey: ['product', id],
+    queryFn: () => fetchProduct(id),
+    enabled: !!id,
+  });
+};
+
+export const useCategories = () => {
+  return useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      await new Promise(resolve => setTimeout(resolve, 200));
+      return [
+        'electronics',
+        'computers',
+        'home-kitchen',
+        'fashion',
+        'books',
+        'sports',
+        'toys',
+        'health'
+      ];
+    },
+  });
+};
+
+export const useDeals = () => {
+  return useQuery({
+    queryKey: ['deals'],
+    queryFn: async () => {
+      await new Promise(resolve => setTimeout(resolve, 400));
+      return [
+        {
+          id: 1,
+          title: "Lightning Deal - 50% off",
+          product: "Wireless Headphones",
+          originalPrice: 199.99,
+          dealPrice: 99.99,
+          image: "/placeholder.svg",
+          timeLeft: "2h 15m"
+        },
+        {
+          id: 2,
+          title: "Deal of the Day",
+          product: "Smart Watch",
+          originalPrice: 299.99,
+          dealPrice: 199.99,
+          image: "/placeholder.svg",
+          timeLeft: "12h 30m"
+        }
+      ];
+    },
+  });
 };

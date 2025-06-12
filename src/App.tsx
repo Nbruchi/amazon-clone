@@ -15,6 +15,9 @@ import Prime from "./pages/Prime";
 import TodaysDeals from "./pages/TodaysDeals";
 import GiftCards from "./pages/GiftCards";
 import NotFound from "./pages/NotFound";
+import SignIn from "./pages/SignIn";
+import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +38,21 @@ const App = () => (
           <Route path="/amazonprime" element={<Prime />} />
           <Route path="/gp/goldbox" element={<TodaysDeals />} />
           <Route path="/gift-cards" element={<GiftCards />} />
+          
+          {/* Auth Routes */}
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          
+          {/* Additional Amazon Routes */}
+          <Route path="/gp/registry/search" element={<NotFound />} />
+          <Route path="/gp/browse.html" element={<NotFound />} />
+          <Route path="/gp/bestsellers" element={<NotFound />} />
+          <Route path="/gp/new-releases" element={<NotFound />} />
+          <Route path="/gp/movers-and-shakers" element={<NotFound />} />
+          <Route path="/conditions-of-use" element={<NotFound />} />
+          <Route path="/privacy-notice" element={<NotFound />} />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
